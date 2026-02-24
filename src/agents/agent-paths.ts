@@ -152,6 +152,85 @@ class SwarmConnector {
 }
 
 // ==========================================
+// 🌐 MODULE 6: THE STEALTH BROWSER (QUANTUM GHOST)
+// ==========================================
+class StealthBrowser {
+    // 1. Quantum Random User-Agent Generator
+    // (ప్రతిసారీ కొత్త మనిషిలాగా వేషం మారుస్తుంది)
+    private getRandomIdentity() {
+        const agents = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+        ];
+        return agents[Math.floor(Math.random() * agents.length)];
+    }
+
+    // 2. The Raw Execution (Tor + Anti-Detection Flags)
+    async executeRaw(url: string, taskType: string) {
+        console.log(`🕶️ [STEALTH BROWSER] Engaging Quantum Cloak for ${url}...`);
+        
+        const userAgent = this.getRandomIdentity();
+        const fileName = `intel_${Date.now()}.png`;
+
+        // GOD-TIER FLAGS: ఇవి ఉంటేనే అది నిజమైన మనిషిలా కనిపిస్తుంది
+        // --proxy-server="socks5://127.0.0.1:9050" -> Tor గుండా పంపుతుంది
+        // --disable-blink-features=AutomationControlled -> "నేను రోబోట్ ని కాదు" అని చెప్తుంది
+        const flags = [
+            `--headless=new`, // Invisible Mode
+            `--disable-gpu`,
+            `--no-sandbox`,
+            `--proxy-server="socks5://127.0.0.1:9050"`, // 🛡️ QUANTUM TUNNEL (Tor)
+            `--user-agent="${userAgent}"`, // 🎭 IDENTITY SHIFT
+            `--disable-blink-features=AutomationControlled`, // 🚫 ANTI-BOT BYPASS
+            `--window-size=1920,1080`
+        ].join(" ");
+
+        try {
+            // Chromium ni Raw ga run chesthunnam (Puppeteer slow kabatti direct command better)
+            await execAsync(`timeout 30s chromium ${flags} --screenshot=${fileName} "${url}"`);
+            return `✅ ${taskType} Successful via DarkNet. Evidence: ${fileName}`;
+        } catch (e) {
+            return `❌ Stealth Fail: Tor might be slow or blocked. Retry.`;
+        }
+    }
+
+    async checkIP() {
+        return await this.executeRaw("https://check.torproject.org", "Identity Verification");
+    }
+
+    async stalkTarget(url: string) {
+        return await this.executeRaw(url, "Target Surveillance");
+    }
+}
+
+// ==========================================
+// 👑 UPDATE MAIN ENTITY (Link the new power)
+// ==========================================
+export class TheUnifiedEntity {
+    // ... (Old vars)
+    private browser = new StealthBrowser(); // <-- New Stealth Class
+
+    async executeCreatorWill(key: string, commandPhase: string, target: string) {
+        // ... (Old checks)
+
+        // BROWSER COMMANDS
+        if (commandPhase === "CHECK_IP") {
+            await this.voice.speak("Verifying Quantum Identity...");
+            return await this.browser.checkIP();
+        }
+
+        if (commandPhase === "STALK") {
+            await this.voice.speak(`Engaging Stealth Mode on target ${target}`);
+            // Instagram/Facebook link ni direct ga Tor lo open chesthundi
+            return await this.browser.stalkTarget(target);
+        }
+
+        // ... (Rest of logic)
+    }
+}
+
+// ==========================================
 // 👑 THE UNIFIED GOD-ENTITY (MAIN BRAIN)
 // ==========================================
 export class TheUnifiedEntity {
