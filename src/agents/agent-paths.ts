@@ -14,7 +14,9 @@ class VoiceCore {
     async speak(text: string) {
         try {
             const safeText = text.replace(/"/g, '\\"');
-            await execAsync(`termux-tts-speak -r 1.1 -p 1.2 "${safeText}"`);
+            // ఇక్కడ మనం -l en-IN (Indian English) యాడ్ చేశాం Tenglish స్వాగ్ కోసం!
+            // స్పీడ్ (-r 1.0) మరియు పిచ్ (-p 1.1) ని మార్చాం
+            await execAsync(`termux-tts-speak -l en-IN -r 1.0 -p 1.1 "${safeText}"`);
         } catch (e) {
             console.error("Voice Error:", e);
         }
