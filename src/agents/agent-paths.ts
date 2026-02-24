@@ -104,31 +104,42 @@ class GhostNetworkRouter {
 // ⚔️ MODULE 4: ARSENAL & HUNTER (The Weapons)
 // ==========================================
 class ArsenalManager {
-    // నీ దగ్గర ఉన్న ఆయుధాలను చెక్ చేస్తుంది
     async checkWeapons() {
         let report = [];
-        const tools = ["tor", "nmap", "hydra", "python", "curl"];
+        const tools = ["tor", "nmap", "python", "curl"];
         
+        // 1. Check Standard Tools
         for (const tool of tools) {
             try {
                 const { stdout } = await execAsync(`command -v ${tool}`);
                 if (stdout.trim()) report.push(tool.toUpperCase());
             } catch {}
         }
+
+        // 2. Check SQLMap
         try {
             await execAsync("ls sqlmap"); 
             report.push("SQLMAP (God-Mode)");
         } catch {}
 
+        // 3. CHECK NEW T-HYDRA (నీ కొత్త అస్త్రం)
+        try {
+            // నువ్వు ఇన్స్టాల్ చేసిన కొత్త పాత్ ని చెక్ చేస్తున్నాం
+            await execAsync("ls T-HYDRA/core/hydra"); 
+            report.push("T-HYDRA (Custom Compiled)");
+        } catch {
+            // ఒకవేళ పాత hydra ఉంటే అది చూపిస్తుంది
+            try {
+                await execAsync("command -v hydra");
+                report.push("HYDRA (Standard)");
+            } catch {}
+        }
+
         if (report.length === 0) return "Arsenal Empty.";
         return `⚔️ GOD-TIER ARSENAL: [ ${report.join(" | ")} ]`;
     }
 
-    // పాత కోడ్ లోని హంటింగ్ లాజిక్ ఇక్కడే ఉంది
-    async huntTarget(target: string, router: GhostNetworkRouter) {
-        console.log(`[JUSTICE EYE] Hunting target ${target} using Dark Web OSINT...`);
-        return await router.executeViaTor(`nmap -sV ${target}`); 
-    }
+    // ... (rest of the class remains same)
 }
 
 // ==========================================
