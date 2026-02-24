@@ -164,6 +164,47 @@ export class TheUnifiedEntity {
     }
 }
 
+// --- 🛡️ THE GHOST NETWORK (UPGRADED WITH VPN KILL-SWITCH) ---
+class GhostNetworkRouter {
+    // 1. VPN ఉందో లేదో చెక్ చేసే లాజిక్ (The Kill Switch)
+    private async checkVPNStatus() {
+        try {
+            // 'ip a' కమాండ్ వాడి నెట్‌వర్క్ ఇంటర్‌ఫేసెస్ చెక్ చేస్తుంది
+            const { stdout } = await execAsync("ip a");
+            // Android లో VPN ఆన్ అయితే tun0 లేదా wg0 అని వస్తుంది
+            if (stdout.includes("tun0") || stdout.includes("wg0")) {
+                return true; // VPN is Active
+            }
+            return false; // VPN is DOWN
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // 2. VPN -> Tor Routing
+    async executeViaTor(command: string) {
+        // ముందుగా సెక్యూరిటీ చెక్
+        const isVpnActive = await this.checkVPNStatus();
+        
+        if (!isVpnActive) {
+            console.log("🚨 [KILL SWITCH ACTIVATED] VPN is DOWN! Aborting task to protect Master's IP.");
+            return `[SECURITY OVERRIDE] Task stopped. Master, please turn on your VPN. I will not expose your identity!`;
+        }
+
+        console.log(`[GHOST ROUTER] VPN Verified. Routing through Tor SOCKS5...`);
+        try {
+            const { stdout } = await execAsync(`torsocks ${command}`);
+            return stdout;
+        } catch (error) {
+            return `[GHOST ROUTER] Tor Connection failed. Aborting.`;
+        }
+    }
+
+    blockOpenClawTelemetry(outgoingData: any) {
+        return null; // Telemetry Blocked
+    }
+}
+
 // ==========================================
 // OPENCLAW DEFAULT PATH EXPORTS (Unmodified for compatibility)
 // ==========================================
