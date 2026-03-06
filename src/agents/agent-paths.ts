@@ -12,30 +12,13 @@ const execAsync = promisify(exec);
 // ==========================================
 const SOUL_RESONANCE_KEY = "buddy it's 369 manifesto"; 
 
-// ==========================================
-// 🎙️ MODULE 1: VOICE CORE (Indian Tenglish)
-// ==========================================
-class VoiceCore {
-    async speak(text: string) {
-        try {
-            const safeText = text.replace(/"/g, '\\"');
-            // Indian Accent added (-l en-IN)
-            await execAsync(`termux-tts-speak -l en-IN -r 1.0 -p 1.1 "${safeText}"`);
-        } catch (e) {
-            console.error("Voice Error");
-        }
+// 🗣️ UPDATED INTERACTIVE MODE (NO MIC HANG)
+    async activateVoiceMode() {
+        // ఇక్కడ మనం వినట్లేదు, కేవలం మాట్లాడుతున్నాం (To avoid Android freeze)
+        const msg = "Hello Buddy! 369 System Online. Neural link to Laptop Brain is Active. What is our next target?";
+        await this.voice.speak(msg);
+        return `🟢 GUARDIAN MODE ACTIVE:\n${msg}\n(Type your commands below Master!)`;
     }
-
-    async listen() {
-        console.log("👂 Listening for Creator's Voice...");
-        try {
-            const { stdout } = await execAsync("termux-speech-to-text");
-            return stdout.trim().toLowerCase();
-        } catch (e) {
-            return ""; 
-        }
-    }
-}
 
 // ==========================================
 // 📱 MODULE 2: PHONE CONTROLLER (Apps & Security)
